@@ -20,16 +20,51 @@
 	\item Выполнение SQL-запросов, изменяющих схему созданной БД по заданию преподавателя. Демонстрация их работы преподавателю.
 \end{enumerate}
  
-%На рис. \ref{fig:movie-service-diagram} изображена \code{UML} диаграмма БД, соответствующей заданию.
+\section{Создание скрипта БД в соответствии с согласованной схемой} 
+ 
+На рис. \ref{fig:movie-service-diagram-old} изображена согласованная схема БД.
 
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=1.0\textwidth]{diagrams/movie-service-diagram}
-%	\caption{\code{UML} диаграмма БД}
-%	\label{fig:movie-service-diagram}
-%\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{../../lab1/diagrams/movie-service-diagram}
+	\caption{Согласованная схема БД}
+	\label{fig:movie-service-diagram-old}
+\end{figure}
+
+В листинге \ref{lst:create} представлен скрипт, создающий БД в соответствии с согласованной схемой, изображённой на рис. \ref{fig:movie-service-diagram}.
+
+\lstinputlisting[caption={Скрипт, создающий БД в соответствии с согласованной схемой},label={lst:create}]{sql/create.sql}
+
+Затем заполним созданную базу данными. Скрипт заполнения приведён в листинге \ref{lst:insert}.
+
+\lstinputlisting[caption={Скрипт, заполняющий базу данными},label={lst:insert}]{sql/insert.sql}
+
+\section{Изменение схемы БД}
+
+Заданием было внести изменения в схему БД для удовлетворения следующим требованиям:
+
+\begin{enumerate}
+	\item  Ввести возможность подписок на часть фильмов/сериалов.
+	\item  Реализовать каталог фильмов и сериалов по различным категориям: жанры, новинки и пр. Каждый фильм может быть отнесен к нескольким категориям. Категории могут иметь иерархию, но при этом фильмы могут относиться к узлу любого уровня иерархии.
+\end{enumerate}
+
+В соответствии с заданием схема БД была изменена, и она приняла следующий вид:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{diagrams/movie-service-diagram}
+	\caption{Изменённая схема БД}
+	\label{fig:movie-service-diagram}
+\end{figure}
+
+В сравнении с предыдущей версией были добавлены следующие таблицы: \code{subscription\_movie}, \code{subscription\_series\_season}, \code{category}, \code{movie\_category} и \code{category\_translation}.
+
+В листинге \ref{lst:update} представлен скрипт, вносящий изменения в БД в соответствии с новой схемой, изображённой на рис. \ref{fig:movie-service-diagram}, а также заполняющий базу новыми данными.
+
+\lstinputlisting[caption={Скрипт, вносящий изменения в БД},label={lst:update}]{sql/update.sql}
 
 \section{Выводы}
 
+В результате работы было проведено ознакомление с языком SQL-DDL, был разработан скрипт, создающий базу данных в соответствии с выбранной ранее моделью данных. Затем было осуществлено изменение модели данных и был разработан скрипт, обновляющий базу данных в соответствии с новой схемой.
 
 \end{document}
