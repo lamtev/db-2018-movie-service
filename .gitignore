@@ -6,3 +6,7 @@
 *.gz
 *.log
 .idea
+build
+out
+config.json
+.gradle

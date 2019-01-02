@@ -1,5 +1,6 @@
 INSERT INTO language (name)
-VALUES ('en-US');
+VALUES ('en-US'),
+       ('ru-RU');
 
 INSERT INTO "user" (login, password_hash, email, birthday, sex, first_name, last_name)
 VALUES ('login', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456', 'email@email.email', '1984-11-12', '0', 'Firstname', 'Lastname');

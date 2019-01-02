@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS language
 (
-  id   SERIAL PRIMARY KEY,
+  id   SMALLSERIAL PRIMARY KEY,
   name CHAR(5) NOT NULL UNIQUE
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS series_season
 CREATE TABLE IF NOT EXISTS series_translation
 (
   series_id   INTEGER       NOT NULL,
-  language_id INTEGER       NOT NULL,
+  language_id SMALLINT       NOT NULL,
   name        VARCHAR(100)  NOT NULL,
   director    VARCHAR(100)  NOT NULL,
   description VARCHAR(1000) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS series_translation
 CREATE TABLE IF NOT EXISTS series_season_translation
 (
   series_season_id INTEGER       NOT NULL,
-  language_id      INTEGER       NOT NULL,
+  language_id      SMALLINT       NOT NULL,
   name             VARCHAR(100)  NOT NULL,
   description      VARCHAR(1000) NOT NULL,
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS movie
 CREATE TABLE IF NOT EXISTS movie_translation
 (
   movie_id    INTEGER       NOT NULL,
-  language_id INTEGER       NOT NULL,
+  language_id SMALLINT       NOT NULL,
   name        VARCHAR(100)  NOT NULL,
   director    VARCHAR(100)  NOT NULL,
   description VARCHAR(1000) NOT NULL,

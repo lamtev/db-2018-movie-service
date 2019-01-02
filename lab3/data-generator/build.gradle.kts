@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.lamtev.movie-service"
-version = "1.0-SNAPSHOT"
+version = "1.0.RELEASE"
 
 repositories {
     jcenter()
@@ -11,6 +11,10 @@ repositories {
 
 dependencies {
     compile("com.intellij:annotations:12.0")
+    compile(group = "org.postgresql", name = "postgresql", version = "42.2.5")
+    compile(group = "com.github.javafaker", name = "javafaker", version = "0.16")
+
+    implementation("com.google.code.gson:gson:2.8.5")
 }
 
 configure<JavaPluginConvention> {
