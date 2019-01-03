@@ -15,8 +15,6 @@ public interface TableGenerator {
     Random RANDOM = new Random(System.currentTimeMillis());
     @NotNull
     Faker FAKER = new Faker(Locale.US, RANDOM);
-    @NotNull
-    String[] PRIMARY_KEY_ID = {"id"};
 
     @NotNull
     static int[] getIdsOfRowsInsertedWith(final @NotNull Statement statement, int ofLength) {
@@ -24,7 +22,7 @@ public interface TableGenerator {
         int i = 0;
         try (final var generatedKeys = statement.getGeneratedKeys()) {
             while (generatedKeys.next()) {
-                keys[i++] = generatedKeys.getInt("id");
+                keys[i++] = generatedKeys.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();

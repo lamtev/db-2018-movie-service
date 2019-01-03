@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+
 public class SeriesSeasonTableGenerator implements TableGenerator {
 
     @NotNull
@@ -28,7 +30,7 @@ public class SeriesSeasonTableGenerator implements TableGenerator {
     public void updateTableUsing(final @NotNull Connection connection) {
         try (final var statement = connection.prepareStatement(
                 "INSERT INTO series_season (series_id, number) VALUES (?, ?)",
-                PRIMARY_KEY_ID
+                RETURN_GENERATED_KEYS
         )) {
             for (final int id : seriesIds) {
                 for (short season = 0; season < seasonsCount; ++season) {

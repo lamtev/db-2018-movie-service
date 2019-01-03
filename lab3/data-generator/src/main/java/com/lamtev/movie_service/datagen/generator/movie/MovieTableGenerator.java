@@ -5,9 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGmoney;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.concurrent.TimeUnit;
+
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 public class MovieTableGenerator implements TableGenerator {
 
@@ -30,8 +33,11 @@ public class MovieTableGenerator implements TableGenerator {
     public void updateTableUsing(final @NotNull Connection connection) {
         try (final var statement = connection.prepareStatement(
                 "INSERT INTO movie (price, release_date, imdb_rating, series_season_id) VALUES (?, ?, ?, ?)",
-                PRIMARY_KEY_ID
+                RETURN_GENERATED_KEYS
         )) {
+            final var moviesAreSeriesSeasonEpisodes = seriesSeasonId != 0;
+            final var date = randomDate();
+            final var rating = randomRating();
             for (int i = 0; i < movieCount; ++i) {
                 int j = 0;
                 statement.setObject(++j, new PGmoney("$" + (
@@ -39,12 +45,14 @@ public class MovieTableGenerator implements TableGenerator {
                                 MOVIE_PRICES_IN_USD[RANDOM.nextInt(MOVIE_PRICES_IN_USD.length)]
                                 : seriesPrice
                 )));
-                statement.setDate(++j, new java.sql.Date(FAKER.date().past(365 * 50, TimeUnit.DAYS).getTime()));
-                statement.setFloat(++j, randomRating());
-                if (seriesSeasonId == 0) {
-                    statement.setNull(++j, Types.INTEGER);
-                } else {
+                if (moviesAreSeriesSeasonEpisodes) {
+                    statement.setDate(++j, date);
+                    statement.setFloat(++j, rating);
                     statement.setInt(++j, seriesSeasonId);
+                } else {
+                    statement.setDate(++j, randomDate());
+                    statement.setFloat(++j, randomRating());
+                    statement.setNull(++j, Types.INTEGER);
                 }
                 statement.addBatch();
             }
@@ -52,11 +60,42 @@ public class MovieTableGenerator implements TableGenerator {
 
             final var movieIds = TableGenerator.getIdsOfRowsInsertedWith(statement, movieCount);
 
-            final var movieTranslation = new MovieTranslationTableGenerator(movieIds, seriesSeasonId != 0);
+            final var movieTranslation = new MovieTranslationTableGenerator(movieIds, moviesAreSeriesSeasonEpisodes);
             movieTranslation.updateTableUsing(connection);
+
+            updateMovieCategoryTableUsing(connection, moviesAreSeriesSeasonEpisodes, movieIds);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateMovieCategoryTableUsing(@NotNull Connection connection, boolean moviesAreSeriesSeasonEpisodes, int[] movieIds) {
+        try (final var categoriesStatement = connection.createStatement()) {
+            categoriesStatement.executeQuery("SELECT COUNT(*) FROM category");
+            var result = categoriesStatement.getResultSet();
+            if (result != null && result.next()) {
+                int categoriesCount = result.getInt(1);
+                final var categoryIds = new int[categoriesCount - 1];
+                int i = 0;
+                categoriesStatement.executeQuery("SELECT id FROM category WHERE name != 'genre'");
+                result = categoriesStatement.getResultSet();
+                if (result != null) {
+                    while (result.next()) {
+                        categoryIds[i++] = result.getShort(1);
+                    }
+                }
+
+                final var movieCategory = new MovieCategoryTableGenerator(movieIds, categoryIds, moviesAreSeriesSeasonEpisodes);
+                movieCategory.updateTableUsing(connection);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @NotNull
+    private Date randomDate() {
+        return new Date(FAKER.date().past(365 * 50, TimeUnit.DAYS).getTime());
     }
 
     private float randomRating() {

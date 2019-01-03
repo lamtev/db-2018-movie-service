@@ -8,6 +8,8 @@ import org.postgresql.util.PGmoney;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+
 public class SeriesTableGenerator implements TableGenerator {
 
     private static final short[] SERIES_PRICES_IN_USD = new short[]{10, 10, 10, 10, 17, 17, 17, 25, 25, 35};
@@ -18,7 +20,7 @@ public class SeriesTableGenerator implements TableGenerator {
     @NotNull
     private final int[][] countSeasonsEpisodesArray;
 
-    public SeriesTableGenerator(@NotNull int[][] countSeasonsEpisodes) {
+    public SeriesTableGenerator(final @NotNull int[][] countSeasonsEpisodes) {
         this.countSeasonsEpisodesArray = countSeasonsEpisodes;
     }
 
@@ -26,7 +28,7 @@ public class SeriesTableGenerator implements TableGenerator {
     public void updateTableUsing(final @NotNull Connection connection) {
         try (final var statement = connection.prepareStatement(
                 "INSERT INTO series (seasons, price) VALUES (?, ?)",
-                PRIMARY_KEY_ID
+                RETURN_GENERATED_KEYS
         )) {
             for (final var countSeasonsEpisodes : countSeasonsEpisodesArray) {
                 final int seriesCount = countSeasonsEpisodes[0];

@@ -52,7 +52,6 @@ public class MovieTranslationTableGenerator implements TableGenerator {
 
     private String randomUrl() {
         return VIDEO_URL_TEMPLATE + RANDOM.nextInt(Integer.MAX_VALUE);
-
     }
 
 }

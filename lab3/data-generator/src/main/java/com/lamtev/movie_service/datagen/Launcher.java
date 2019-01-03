@@ -1,6 +1,8 @@
 package com.lamtev.movie_service.datagen;
 
 import com.lamtev.movie_service.datagen.cli_args.ArgumentsParser;
+import com.lamtev.movie_service.datagen.generator.LanguageTableGenerator;
+import com.lamtev.movie_service.datagen.generator.category.CategoryTableGenerator;
 import com.lamtev.movie_service.datagen.generator.movie.MovieTableGenerator;
 import com.lamtev.movie_service.datagen.generator.series.SeriesTableGenerator;
 
@@ -18,6 +20,12 @@ public class Launcher {
         final var generatorParams = new ArgumentsParser().parseArguments(args);
         final var endpoint = generatorParams.getEndpoint();
         try (final var connection = DriverManager.getConnection(endpoint.url(), endpoint.user(), endpoint.password())) {
+            final var language = new LanguageTableGenerator();
+            language.updateTableUsing(connection);
+
+            final var category = new CategoryTableGenerator();
+            category.updateTableUsing(connection);
+
             final var movie = new MovieTableGenerator(1_000);
             movie.updateTableUsing(connection);
 
