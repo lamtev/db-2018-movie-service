@@ -5,6 +5,10 @@ import com.lamtev.movie_service.datagen.generator.LanguageTableGenerator;
 import com.lamtev.movie_service.datagen.generator.category.CategoryTableGenerator;
 import com.lamtev.movie_service.datagen.generator.movie.MovieTableGenerator;
 import com.lamtev.movie_service.datagen.generator.series.SeriesTableGenerator;
+import com.lamtev.movie_service.datagen.generator.user.SubscriptionTableGenerator;
+import com.lamtev.movie_service.datagen.generator.user.UserMovieTableGenerator;
+import com.lamtev.movie_service.datagen.generator.user.UserSeriesTableGenerator;
+import com.lamtev.movie_service.datagen.generator.user.UserTableGenerator;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -31,6 +35,18 @@ public class Launcher {
 
             final var series = new SeriesTableGenerator(new int[][]{{100, 3, 15}, {200, 2, 25}});
             series.updateTableUsing(connection);
+
+            final var user = new UserTableGenerator(100_000L, (byte) 53);
+            user.updateTableUsing(connection);
+
+            final var userMovie = new UserMovieTableGenerator((byte) 64, 5, 10);
+            userMovie.updateTableUsing(connection);
+
+            final var seriesMovie = new UserSeriesTableGenerator((byte) 35, 2, 5);
+            seriesMovie.updateTableUsing(connection);
+
+            final var subscription = new SubscriptionTableGenerator(100_000L, 3, 8);
+            subscription.updateTableUsing(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

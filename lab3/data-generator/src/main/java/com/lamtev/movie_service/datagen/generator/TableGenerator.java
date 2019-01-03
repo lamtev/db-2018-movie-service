@@ -4,10 +4,12 @@ import com.github.javafaker.Faker;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public interface TableGenerator {
 
@@ -29,6 +31,15 @@ public interface TableGenerator {
         }
 
         return keys;
+    }
+
+    @NotNull
+    static Date randomDate(int maxYearsAgo) {
+        return new Date(FAKER.date().past(365 * maxYearsAgo, TimeUnit.DAYS).getTime());
+    }
+
+    static float randomRating() {
+        return 5.0f + RANDOM.nextFloat() * (10.0f - 5.0f);
     }
 
     void updateTableUsing(final @NotNull Connection connection);

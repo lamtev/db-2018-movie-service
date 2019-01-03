@@ -5,10 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGmoney;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.concurrent.TimeUnit;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
@@ -36,8 +34,8 @@ public class MovieTableGenerator implements TableGenerator {
                 RETURN_GENERATED_KEYS
         )) {
             final var moviesAreSeriesSeasonEpisodes = seriesSeasonId != 0;
-            final var date = randomDate();
-            final var rating = randomRating();
+            final var date = TableGenerator.randomDate(50);
+            final var rating = TableGenerator.randomRating();
             for (int i = 0; i < movieCount; ++i) {
                 int j = 0;
                 statement.setObject(++j, new PGmoney("$" + (
@@ -50,8 +48,8 @@ public class MovieTableGenerator implements TableGenerator {
                     statement.setFloat(++j, rating);
                     statement.setInt(++j, seriesSeasonId);
                 } else {
-                    statement.setDate(++j, randomDate());
-                    statement.setFloat(++j, randomRating());
+                    statement.setDate(++j, TableGenerator.randomDate(50));
+                    statement.setFloat(++j, TableGenerator.randomRating());
                     statement.setNull(++j, Types.INTEGER);
                 }
                 statement.addBatch();
@@ -91,15 +89,6 @@ public class MovieTableGenerator implements TableGenerator {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @NotNull
-    private Date randomDate() {
-        return new Date(FAKER.date().past(365 * 50, TimeUnit.DAYS).getTime());
-    }
-
-    private float randomRating() {
-        return 5.0f + RANDOM.nextFloat() * (10.0f - 5.0f);
     }
 
 }
