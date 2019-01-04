@@ -8,15 +8,15 @@ import java.sql.SQLException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class UserTableGenerator implements TableGenerator {
+public final class UserTableGenerator implements TableGenerator {
 
     private static byte[] buf = null;
     private final long count;
-    private final byte femalePercent;
+    private final int femalePercent;
 
-    public UserTableGenerator(long count, byte femalePercent) {
+    public UserTableGenerator(long count, int femalePercentage) {
         this.count = count;
-        this.femalePercent = femalePercent;
+        this.femalePercent = femalePercentage;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class UserTableGenerator implements TableGenerator {
                 statement.setString(++j, username);
                 statement.setString(++j, Long.toHexString(FAKER.number().randomNumber()));
                 statement.setString(++j, username + "@email.com");
-                statement.setDate(++j, TableGenerator.randomDate(100));
+                statement.setDate(++j, UTILS.randomDate(100));
                 statement.setString(++j, randomSex());
                 statement.setString(++j, firstName);
                 statement.setString(++j, lastName);

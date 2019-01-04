@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class SeriesSeasonTableGenerator implements TableGenerator {
+public final class SeriesSeasonTableGenerator implements TableGenerator {
 
     @NotNull
     private final int[] seriesIds;
@@ -42,7 +42,7 @@ public class SeriesSeasonTableGenerator implements TableGenerator {
             }
             statement.executeBatch();
 
-            final var seasonIds = TableGenerator.getIdsOfRowsInsertedWith(statement, seriesIds.length * seasonsCount);
+            final var seasonIds = UTILS.getIdsOfRowsInsertedWith(statement, seriesIds.length * seasonsCount);
 
             final var seasonTranslation = new SeriesSeasonTranslationTableGenerator(seasonIds);
             seasonTranslation.updateTableUsing(connection);

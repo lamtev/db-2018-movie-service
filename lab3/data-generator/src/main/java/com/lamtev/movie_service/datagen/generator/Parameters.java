@@ -2,27 +2,104 @@ package com.lamtev.movie_service.datagen.generator;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Parameters {
+public final class Parameters {
 
-    @NotNull
-    private final EndpointInfo endpoint;
     private final int usersCount;
+    private final int femalePercentage;
     private final int moviesCount;
-    private final int seriesCount;
+    /**
+     * {{1000, 3, 15}, ...} - 1000 series, each consists of 3 seasons with 15 episodes
+     */
+    @NotNull
+    private final int[][] seriesCountSeasonsEpisodes;
+    private final int percentageOfUsersWhoBoughtMovies;
+    private final int minMoviesPerUser;
+    private final int maxMoviesPerUser;
+    private final int percentageOfUsersWhoBoughtSeries;
+    private final int minSeriesPerUser;
+    private final int maxSeriesPerUser;
+    private final int minSubscriptionsPerUser;
+    private final int maxSubscriptionsPerUser;
+    /**
+     * {{duration in days, price in USD, number of movies, number of series seasons}, ... }
+     */
+    @NotNull
+    private final int[][] durationPriceNMoviesMSeasons;
+    private final int moviesSubscriptionsPercentage;
 
-    private Parameters(final @NotNull EndpointInfo endpoint,
-                       int usersCount,
-                       int moviesCount,
-                       int seriesCount) {
-        this.endpoint = endpoint;
+    public Parameters(int usersCount,
+                      int femalePercentage,
+                      int moviesCount,
+                      final @NotNull int[][] seriesCountSeasonsEpisodes,
+                      int percentageOfUsersWhoBoughtMovies,
+                      int minMoviesPerUser,
+                      int maxMoviesPerUser,
+                      int percentageOfUsersWhoBoughtSeries,
+                      int minSeriesPerUser,
+                      int maxSeriesPerUser,
+                      int minSubscriptionsPerUser,
+                      int maxSubscriptionsPerUser,
+                      @NotNull int[][] durationPriceNMoviesMSeasons,
+                      int moviesSubscriptionsPercentage) {
         this.usersCount = usersCount;
+        this.femalePercentage = femalePercentage;
         this.moviesCount = moviesCount;
-        this.seriesCount = seriesCount;
+        this.seriesCountSeasonsEpisodes = seriesCountSeasonsEpisodes;
+        this.percentageOfUsersWhoBoughtMovies = percentageOfUsersWhoBoughtMovies;
+        this.minMoviesPerUser = minMoviesPerUser;
+        this.maxMoviesPerUser = maxMoviesPerUser;
+        this.percentageOfUsersWhoBoughtSeries = percentageOfUsersWhoBoughtSeries;
+        this.minSeriesPerUser = minSeriesPerUser;
+        this.maxSeriesPerUser = maxSeriesPerUser;
+        this.minSubscriptionsPerUser = minSubscriptionsPerUser;
+        this.maxSubscriptionsPerUser = maxSubscriptionsPerUser;
+        this.durationPriceNMoviesMSeasons = durationPriceNMoviesMSeasons;
+        this.moviesSubscriptionsPercentage = moviesSubscriptionsPercentage;
+    }
+
+    public int femalePercentage() {
+        return femalePercentage;
+    }
+
+    public int percentageOfUsersWhoBoughtMovies() {
+        return percentageOfUsersWhoBoughtMovies;
+    }
+
+    public int minMoviesPerUser() {
+        return minMoviesPerUser;
+    }
+
+    public int maxMoviesPerUser() {
+        return maxMoviesPerUser;
+    }
+
+    public int percentageOfUsersWhoBoughtSeries() {
+        return percentageOfUsersWhoBoughtSeries;
+    }
+
+    public int minSeriesPerUser() {
+        return minSeriesPerUser;
+    }
+
+    public int maxSeriesPerUser() {
+        return maxSeriesPerUser;
+    }
+
+    public int minSubscriptionsPerUser() {
+        return minSubscriptionsPerUser;
+    }
+
+    public int maxSubscriptionsPerUser() {
+        return maxSubscriptionsPerUser;
     }
 
     @NotNull
-    public EndpointInfo getEndpoint() {
-        return endpoint;
+    public int[][] durationPriceNMoviesMSeasons() {
+        return durationPriceNMoviesMSeasons;
+    }
+
+    public int moviesSubscriptionsPercentage() {
+        return moviesSubscriptionsPercentage;
     }
 
     public int usersCount() {
@@ -33,76 +110,8 @@ public class Parameters {
         return moviesCount;
     }
 
-    public int seriesCount() {
-        return seriesCount;
-    }
-
-    public static class Builder {
-
-        @NotNull
-        private EndpointInfo endpoint;
-        private int usersCount = 1_000_000;
-        private int moviesCount = 10_000;
-        private int seriesCount = 1_000;
-
-        public Parameters build() {
-            return new Parameters(endpoint, usersCount, moviesCount, seriesCount);
-        }
-
-        public Builder setEndpoint(final @NotNull EndpointInfo endpoint) {
-            this.endpoint = endpoint;
-            return this;
-        }
-
-        public Builder setUsersCount(int usersCount) {
-            this.usersCount = usersCount;
-            return this;
-        }
-
-        public Builder setMoviesCount(int moviesCount) {
-            this.moviesCount = moviesCount;
-            return this;
-        }
-
-        public Builder setSeriesCount(int seriesCount) {
-            this.seriesCount = seriesCount;
-            return this;
-        }
-
-    }
-
-    public static class EndpointInfo {
-
-        @NotNull
-        private final String url;
-        @NotNull
-        private final String user;
-        @NotNull
-        private final String password;
-
-        public EndpointInfo(@NotNull final String url,
-                            @NotNull final String user,
-                            @NotNull final String password) {
-            this.url = url;
-            this.user = user;
-            this.password = password;
-        }
-
-        @NotNull
-        public String url() {
-            return url;
-        }
-
-        @NotNull
-        public String user() {
-            return user;
-        }
-
-        @NotNull
-        public String password() {
-            return password;
-        }
-
+    public int[][] seriesCountSeasonsEpisodes() {
+        return seriesCountSeasonsEpisodes;
     }
 
 }

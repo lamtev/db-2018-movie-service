@@ -1,5 +1,6 @@
 package com.lamtev.movie_service.datagen.generator.user;
 
+import com.lamtev.movie_service.datagen.generator.StorageDAO;
 import com.lamtev.movie_service.datagen.generator.TableGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,13 +9,13 @@ import org.postgresql.util.PGmoney;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class UserMovieTableGenerator implements TableGenerator {
+public final class UserMovieTableGenerator implements TableGenerator {
 
-    private final byte percentageOfUsersWhoBoughtMovies;
+    private final int percentageOfUsersWhoBoughtMovies;
     private final int minMovies;
     private final int maxMovies;
 
-    public UserMovieTableGenerator(byte percentageOfUsersWhoBoughtMovies, int minMovies, int maxMovies) {
+    public UserMovieTableGenerator(int percentageOfUsersWhoBoughtMovies, int minMovies, int maxMovies) {
         this.percentageOfUsersWhoBoughtMovies = percentageOfUsersWhoBoughtMovies;
         this.minMovies = minMovies;
         this.maxMovies = maxMovies;
@@ -22,7 +23,7 @@ public class UserMovieTableGenerator implements TableGenerator {
 
     @Override
     public void updateTableUsing(final @NotNull Connection connection) {
-        final var userIds = UserTable.instance().ids(connection);
+        final var userIds = StorageDAO.instance().ids(connection, "\"user\"");
         final var movieIdsPrices = movieIdsPrices(connection);
         if (userIds.length == 0 || movieIdsPrices == null) {
             return;
@@ -53,15 +54,10 @@ public class UserMovieTableGenerator implements TableGenerator {
     @Nullable
     private int[][] movieIdsPrices(final @NotNull Connection connection) {
         try (final var statement = connection.createStatement()) {
-            statement.executeQuery("SELECT COUNT(*) FROM movie");
-            var result = statement.getResultSet();
-            int count = 1;
-            if (result != null && result.next()) {
-                count = result.getInt(1);
-            }
+            int count = StorageDAO.instance().count(connection, "movie");
             int[][] movieIdsPrices = new int[2][count];
             statement.executeQuery("SELECT id, price FROM movie");
-            result = statement.getResultSet();
+            final var result = statement.getResultSet();
             int i = 0;
             if (result != null) {
                 while (result.next()) {

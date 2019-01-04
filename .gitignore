@@ -8,5 +8,5 @@
 .idea
 build
 out
-config.json
+db.json
 .gradle

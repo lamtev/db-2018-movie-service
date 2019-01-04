@@ -10,7 +10,7 @@ import java.util.Map;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class CategoryTableGenerator implements TableGenerator {
+public final class CategoryTableGenerator implements TableGenerator {
 
     private static final Map<String, String> CATEGORY_TO_SUPERCATEGORY = new LinkedHashMap<>() {{
         put("genre", "");

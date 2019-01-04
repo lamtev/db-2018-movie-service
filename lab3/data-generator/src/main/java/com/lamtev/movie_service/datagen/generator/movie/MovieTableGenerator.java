@@ -10,15 +10,15 @@ import java.sql.Types;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class MovieTableGenerator implements TableGenerator {
+public final class MovieTableGenerator implements TableGenerator {
 
     private static final short[] MOVIE_PRICES_IN_USD = new short[]{5, 5, 5, 5, 5, 7, 7, 7, 7, 10, 10, 10, 15, 15, 20, 25, 35};
     private final int movieCount;
     private final int seriesSeasonId;
     private final int seriesPrice;
 
-    public MovieTableGenerator(int movieCount) {
-        this(movieCount, 0, 0);
+    public MovieTableGenerator(int count) {
+        this(count, 0, 0);
     }
 
     public MovieTableGenerator(int movieCount, int seriesSeasonId, int seriesPrice) {
@@ -34,8 +34,8 @@ public class MovieTableGenerator implements TableGenerator {
                 RETURN_GENERATED_KEYS
         )) {
             final var moviesAreSeriesSeasonEpisodes = seriesSeasonId != 0;
-            final var date = TableGenerator.randomDate(50);
-            final var rating = TableGenerator.randomRating();
+            final var date = UTILS.randomDate(50);
+            final var rating = UTILS.randomRating();
             for (int i = 0; i < movieCount; ++i) {
                 int j = 0;
                 statement.setObject(++j, new PGmoney("$" + (
@@ -48,15 +48,15 @@ public class MovieTableGenerator implements TableGenerator {
                     statement.setFloat(++j, rating);
                     statement.setInt(++j, seriesSeasonId);
                 } else {
-                    statement.setDate(++j, TableGenerator.randomDate(50));
-                    statement.setFloat(++j, TableGenerator.randomRating());
+                    statement.setDate(++j, UTILS.randomDate(50));
+                    statement.setFloat(++j, UTILS.randomRating());
                     statement.setNull(++j, Types.INTEGER);
                 }
                 statement.addBatch();
             }
             statement.executeBatch();
 
-            final var movieIds = TableGenerator.getIdsOfRowsInsertedWith(statement, movieCount);
+            final var movieIds = UTILS.getIdsOfRowsInsertedWith(statement, movieCount);
 
             final var movieTranslation = new MovieTranslationTableGenerator(movieIds, moviesAreSeriesSeasonEpisodes);
             movieTranslation.updateTableUsing(connection);

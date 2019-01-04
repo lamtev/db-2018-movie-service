@@ -1,26 +1,25 @@
 package com.lamtev.movie_service.datagen.generator.movie;
 
 import com.lamtev.movie_service.datagen.generator.TableGenerator;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-public class MovieCategoryTableGenerator implements TableGenerator {
+public final class MovieCategoryTableGenerator implements TableGenerator {
 
     @NotNull
     private final int[] movieIds;
     @NotNull
-    private final List<Integer> categoryIds;
+    private final TIntList categoryIds;
     private final boolean sameCategoriesForAllMovies;
 
     public MovieCategoryTableGenerator(final @NotNull int[] movieIds, final @NotNull int[] categoryIds, boolean sameCategoriesForAllMovies) {
         this.movieIds = movieIds;
-        this.categoryIds = new ArrayList<>(categoryIds.length);
+        this.categoryIds = new TIntArrayList(categoryIds.length);
         Arrays.stream(categoryIds).forEach(this.categoryIds::add);
         this.sameCategoriesForAllMovies = sameCategoriesForAllMovies;
     }
@@ -52,7 +51,7 @@ public class MovieCategoryTableGenerator implements TableGenerator {
 
     @NotNull
     private int[] nRandomCategories(int n) {
-        Collections.shuffle(categoryIds);
+        categoryIds.shuffle(RANDOM);
         final var res = new int[n];
         for (int i = 0; i < n; ++i) {
             res[i] = categoryIds.get(i);

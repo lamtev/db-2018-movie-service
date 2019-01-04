@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class CategoryTranslationTableGenerator implements TableGenerator {
+public final class CategoryTranslationTableGenerator implements TableGenerator {
 
     @NotNull
     private final int[] categoryIds;

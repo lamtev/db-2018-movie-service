@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class SeriesTranslationTableGenerator implements TableGenerator {
+public final class SeriesTranslationTableGenerator implements TableGenerator {
 
     @NotNull
     private final int[] seriesIds;
@@ -20,7 +20,7 @@ public class SeriesTranslationTableGenerator implements TableGenerator {
         try (final var statement = connection.prepareStatement(
                 "INSERT INTO series_translation (series_id, language_id, name, director, description) VALUES (?, ?, ?, ? , ?)"
         )) {
-            for (int seriesId : seriesIds) {
+            for (final var seriesId : seriesIds) {
                 for (int languageId = 1; languageId <= 2; ++languageId) {
                     int i = 0;
                     statement.setInt(++i, seriesId);

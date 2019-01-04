@@ -9,6 +9,10 @@ CREATE TABLE IF NOT EXISTS subscription_movie
 );
 
 
+INSERT INTO subscription_movie (subscription_id, movie_id)
+VALUES (1, 5);
+
+
 CREATE TABLE IF NOT EXISTS subscription_series_season
 (
   subscription_id  BIGINT  NOT NULL,
@@ -20,14 +24,26 @@ CREATE TABLE IF NOT EXISTS subscription_series_season
 );
 
 
+INSERT INTO subscription_series_season (subscription_id, series_season_id)
+VALUES (2, 1);
+
+
 CREATE TABLE IF NOT EXISTS category
 (
   id               SERIAL PRIMARY KEY,
-  name             VARCHAR(50) UNIQUE NOT NULL,
+  name             VARCHAR(50) NOT NULL,
   supercategory_id SMALLINT,
 
   FOREIGN KEY (supercategory_id) REFERENCES category (id)
 );
+
+
+INSERT INTO category (name, supercategory_id)
+VALUES ('genre', NULL),
+       ('comedy', 1),
+       ('thriller', 1),
+       ('drama', 1),
+       ('criminal', 1);
 
 
 CREATE TABLE IF NOT EXISTS movie_category
@@ -41,6 +57,16 @@ CREATE TABLE IF NOT EXISTS movie_category
 );
 
 
+INSERT INTO movie_category (movie_id, category_id)
+VALUES (1, 2),
+       (2, 2),
+       (3, 2),
+       (4, 2),
+       (5, 3),
+       (5, 4),
+       (5, 5);
+
+
 CREATE TABLE IF NOT EXISTS category_translation
 (
   category_id SMALLINT    NOT NULL,
@@ -51,3 +77,10 @@ CREATE TABLE IF NOT EXISTS category_translation
   FOREIGN KEY (category_id) REFERENCES category (id),
   FOREIGN KEY (language_id) REFERENCES language (id)
 );
+
+INSERT INTO category_translation (category_id, language_id, translation)
+VALUES (1, 1, 'genre'),
+       (2, 1, 'comedy'),
+       (3, 1, 'thriller'),
+       (4, 1, 'drama'),
+       (5, 1, 'criminal');

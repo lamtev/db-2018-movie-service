@@ -2,14 +2,13 @@ package com.lamtev.movie_service.datagen;
 
 import com.lamtev.movie_service.datagen.cli_args.ArgumentsParser;
 import com.lamtev.movie_service.datagen.generator.LanguageTableGenerator;
+import com.lamtev.movie_service.datagen.generator.StorageDAO;
 import com.lamtev.movie_service.datagen.generator.category.CategoryTableGenerator;
-import com.lamtev.movie_service.datagen.generator.movie.MovieTable;
 import com.lamtev.movie_service.datagen.generator.movie.MovieTableGenerator;
 import com.lamtev.movie_service.datagen.generator.series.SeriesTableGenerator;
-import com.lamtev.movie_service.datagen.generator.series.season.SeriesSeasonTable;
 import com.lamtev.movie_service.datagen.generator.subscription.SubscriptionMovieTableGenerator;
 import com.lamtev.movie_service.datagen.generator.subscription.SubscriptionSeriesSeasonTableGenerator;
-import com.lamtev.movie_service.datagen.generator.subscription.SubscriptionTable;
+import com.lamtev.movie_service.datagen.generator.subscription.SubscriptionTableDAO;
 import com.lamtev.movie_service.datagen.generator.subscription.SubscriptionTableGenerator;
 import com.lamtev.movie_service.datagen.generator.user.UserMovieTableGenerator;
 import com.lamtev.movie_service.datagen.generator.user.UserSeriesTableGenerator;
@@ -18,7 +17,7 @@ import com.lamtev.movie_service.datagen.generator.user.UserTableGenerator;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Launcher {
+final class Launcher {
 
     public static void main(String[] args) {
         try {
@@ -26,8 +25,13 @@ public class Launcher {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        final var generatorParams = new ArgumentsParser().parseArguments(args);
-        final var endpoint = generatorParams.getEndpoint();
+        final var argumentsParser = new ArgumentsParser(args);
+        final var endpoint = argumentsParser.endpoint();
+        final var parameters = argumentsParser.parameters();
+        if (endpoint == null || parameters == null) {
+            System.err.println("Wrong arguments!");
+            return;
+        }
         try (final var connection = DriverManager.getConnection(endpoint.url(), endpoint.user(), endpoint.password())) {
             final var language = new LanguageTableGenerator();
             language.updateTableUsing(connection);
@@ -35,50 +39,49 @@ public class Launcher {
             final var category = new CategoryTableGenerator();
             category.updateTableUsing(connection);
 
-            final var movie = new MovieTableGenerator(1_000);
+            final var movie = new MovieTableGenerator(parameters.moviesCount());
             movie.updateTableUsing(connection);
 
-            final var series = new SeriesTableGenerator(new int[][]{{100, 3, 15}, {200, 2, 25}});
+            final var series = new SeriesTableGenerator(parameters.seriesCountSeasonsEpisodes());
             series.updateTableUsing(connection);
 
-            final var user = new UserTableGenerator(10_000L, (byte) 53);
+            final var user = new UserTableGenerator(parameters.usersCount(), parameters.femalePercentage());
             user.updateTableUsing(connection);
 
-            final var userMovie = new UserMovieTableGenerator((byte) 64, 5, 10);
+            final var userMovie = new UserMovieTableGenerator(parameters.percentageOfUsersWhoBoughtMovies(), parameters.minMoviesPerUser(), parameters.maxMoviesPerUser());
             userMovie.updateTableUsing(connection);
 
-            final var seriesMovie = new UserSeriesTableGenerator((byte) 35, 2, 5);
+            final var seriesMovie = new UserSeriesTableGenerator(parameters.percentageOfUsersWhoBoughtSeries(), parameters.minSeriesPerUser(), parameters.maxSeriesPerUser());
             seriesMovie.updateTableUsing(connection);
 
-            final var subscription = new SubscriptionTableGenerator(10_000L, 3, 8);
+            final var subscription = new SubscriptionTableGenerator(parameters.usersCount(), parameters.minSubscriptionsPerUser(), parameters.maxSubscriptionsPerUser(), parameters.durationPriceNMoviesMSeasons());
             subscription.updateTableUsing(connection);
 
-            final var subscriptionIdsNMoviesMSeasons = SubscriptionTable.instance().idsNMoviesOrMSeasons(connection);
-            final var subscriptionIdsNMovies = new long[2][0];
-            final var subscriptionIdsMSeasons = new long[2][0];
-            split(subscriptionIdsNMoviesMSeasons, 35, subscriptionIdsNMovies, subscriptionIdsMSeasons);
+            final var subscriptionIdsNMoviesMSeasons = SubscriptionTableDAO.instance().idsNMoviesOrMSeasons(connection, parameters.durationPriceNMoviesMSeasons());
+            final var subscriptionIdsNMovies = new int[2][0];
+            final var subscriptionIdsMSeasons = new int[2][0];
+            split(subscriptionIdsNMoviesMSeasons, parameters.moviesSubscriptionsPercentage(), subscriptionIdsNMovies, subscriptionIdsMSeasons);
 
-            final var movieIds = MovieTable.instance().ids(connection);
+            final var movieIds = StorageDAO.instance().ids(connection, "movie");
             final var subscriptionMovie = new SubscriptionMovieTableGenerator(subscriptionIdsNMovies, movieIds);
             subscriptionMovie.updateTableUsing(connection);
 
-            final var seriesSeasonIds = SeriesSeasonTable.instance().ids(connection);
+            final var seriesSeasonIds = StorageDAO.instance().ids(connection, "series_season");
             final var subscriptionSeriesSeason = new SubscriptionSeriesSeasonTableGenerator(subscriptionIdsMSeasons, seriesSeasonIds);
             subscriptionSeriesSeason.updateTableUsing(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
-    private static void split(long[][] subscriptionIdsNMoviesMSeasons, int moviesPercentage, long[][] subscriptionIdsNMovies, long[][] subscriptionIdsMSeasons) {
+    private static void split(int[][] subscriptionIdsNMoviesMSeasons, int moviesPercentage, int[][] subscriptionIdsNMovies, int[][] subscriptionIdsMSeasons) {
         int moviesIdx = 0;
         int seasonsIdx = 0;
         int moviesLength = (int) Math.ceil((double) subscriptionIdsNMoviesMSeasons[0].length / 100) * moviesPercentage;
         int seasonsLength = subscriptionIdsNMoviesMSeasons[0].length - moviesLength;
         for (int i = 0; i < 2; ++i) {
-            subscriptionIdsNMovies[i] = new long[moviesLength];
-            subscriptionIdsMSeasons[i] = new long[seasonsLength];
+            subscriptionIdsNMovies[i] = new int[moviesLength];
+            subscriptionIdsMSeasons[i] = new int[seasonsLength];
         }
         for (int i = 0; i < subscriptionIdsNMoviesMSeasons[0].length; ++i) {
             if (i % 100 < moviesPercentage) {

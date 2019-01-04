@@ -5,18 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 
-public class SubscriptionMovieTableGenerator implements TableGenerator {
+public final class SubscriptionMovieTableGenerator implements TableGenerator {
 
     @NotNull
-    private final long[][] subscriptionIdsNMoviesMSeasons;
+    private final int[][] subscriptionIdsNMovies;
     @NotNull
     private final int[] movieIds;
 
-    public SubscriptionMovieTableGenerator(final @NotNull long[][] subscriptionIdsNMoviesMSeasons, final @NotNull int[] movieIds) {
-        this.subscriptionIdsNMoviesMSeasons = subscriptionIdsNMoviesMSeasons;
+    public SubscriptionMovieTableGenerator(final @NotNull int[][] subscriptionIdsNMovies, final @NotNull int[] movieIds) {
+        this.subscriptionIdsNMovies = subscriptionIdsNMovies;
         this.movieIds = movieIds;
     }
 
@@ -25,13 +23,13 @@ public class SubscriptionMovieTableGenerator implements TableGenerator {
         try (final var statement = connection.prepareStatement(
                 "INSERT INTO subscription_movie (subscription_id, movie_id) VALUES (?, ?)"
         )) {
-            for (int j = 0; j < subscriptionIdsNMoviesMSeasons[0].length; ++j) {
-                final var nMovies = (int) subscriptionIdsNMoviesMSeasons[1][j];
-                final var movieIdsIdxs = nUniqueRandomInts(nMovies, movieIds.length);
-                for (final var movieIdIdx : movieIdsIdxs) {
+            for (int j = 0; j < subscriptionIdsNMovies[0].length; ++j) {
+                final var nMovies = (int) subscriptionIdsNMovies[1][j];
+                final var movieIdsIdxs = UTILS.nUniqueRandomInts(nMovies, movieIds.length);
+                for (final var movieIdsIdx : movieIdsIdxs) {
                     int i = 0;
-                    statement.setLong(++i, subscriptionIdsNMoviesMSeasons[0][j]);
-                    statement.setInt(++i, movieIds[movieIdIdx]);
+                    statement.setLong(++i, subscriptionIdsNMovies[0][j]);
+                    statement.setInt(++i, movieIds[movieIdsIdx]);
                     statement.addBatch();
                 }
             }
@@ -40,14 +38,5 @@ public class SubscriptionMovieTableGenerator implements TableGenerator {
             e.printStackTrace();
         }
     }
-
-   private Set<Integer> nUniqueRandomInts(int n, int bound) {
-       final var ints = new HashSet<Integer>(n);
-       while (ints.size() != n) {
-           ints.add(RANDOM.nextInt(bound));
-       }
-
-       return ints;
-   }
 
 }

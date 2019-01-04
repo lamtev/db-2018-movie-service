@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class SeriesSeasonTranslationTableGenerator implements TableGenerator {
+public final class SeriesSeasonTranslationTableGenerator implements TableGenerator {
 
     @NotNull
     private final int[] seasonIds;
@@ -22,7 +22,7 @@ public class SeriesSeasonTranslationTableGenerator implements TableGenerator {
                         " VALUES (?, ?, ?, ?)"
         )) {
             for (int languageId = 1; languageId <= 2; ++languageId) {
-                for (final int seasonId : seasonIds) {
+                for (final var seasonId : seasonIds) {
                     int i = 0;
                     statement.setInt(++i, seasonId);
                     statement.setInt(++i, languageId);

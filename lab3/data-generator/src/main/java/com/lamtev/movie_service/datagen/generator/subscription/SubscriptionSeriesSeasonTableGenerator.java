@@ -5,18 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 
-public class SubscriptionSeriesSeasonTableGenerator implements TableGenerator {
+public final class SubscriptionSeriesSeasonTableGenerator implements TableGenerator {
 
     @NotNull
-    private final long[][] subscriptionIdsNMoviesMSeasons;
+    private final int[][] subscriptionIdsMSeasons;
     @NotNull
     private final int[] seriesSeasonIds;
 
-    public SubscriptionSeriesSeasonTableGenerator(final @NotNull long[][] subscriptionIdsNMoviesMSeasons, final @NotNull int[] seriesSeasonIds) {
-        this.subscriptionIdsNMoviesMSeasons = subscriptionIdsNMoviesMSeasons;
+    public SubscriptionSeriesSeasonTableGenerator(final @NotNull int[][] subscriptionIdsMSeasons, final @NotNull int[] seriesSeasonIds) {
+        this.subscriptionIdsMSeasons = subscriptionIdsMSeasons;
         this.seriesSeasonIds = seriesSeasonIds;
     }
 
@@ -25,12 +23,12 @@ public class SubscriptionSeriesSeasonTableGenerator implements TableGenerator {
         try (final var statement = connection.prepareStatement(
                 "INSERT INTO subscription_series_season (subscription_id, series_season_id) VALUES (?, ?)"
         )) {
-            for (int j = 0; j < subscriptionIdsNMoviesMSeasons[0].length; ++j) {
-                final var nSeriesSeasons = (int) subscriptionIdsNMoviesMSeasons[1][j];
-                final var seriesIdsIdxs = nUniqueRandomInts(nSeriesSeasons, seriesSeasonIds.length);
+            for (int j = 0; j < subscriptionIdsMSeasons[0].length; ++j) {
+                final var nSeriesSeasons = (int) subscriptionIdsMSeasons[1][j];
+                final var seriesIdsIdxs = UTILS.nUniqueRandomInts(nSeriesSeasons, seriesSeasonIds.length);
                 for (final var seriesIdsIdx : seriesIdsIdxs) {
                     int i = 0;
-                    statement.setLong(++i, subscriptionIdsNMoviesMSeasons[0][j]);
+                    statement.setLong(++i, subscriptionIdsMSeasons[0][j]);
                     statement.setInt(++i, seriesSeasonIds[seriesIdsIdx]);
                     statement.addBatch();
                 }
@@ -39,15 +37,6 @@ public class SubscriptionSeriesSeasonTableGenerator implements TableGenerator {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private Set<Integer> nUniqueRandomInts(int n, int bound) {
-        final var ints = new HashSet<Integer>(n);
-        while (ints.size() != n) {
-            ints.add(RANDOM.nextInt(bound));
-        }
-
-        return ints;
     }
 
 }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class SeriesTableGenerator implements TableGenerator {
+public final class SeriesTableGenerator implements TableGenerator {
 
     private static final short[] SERIES_PRICES_IN_USD = new short[]{10, 10, 10, 10, 17, 17, 17, 25, 25, 35};
 
@@ -44,7 +44,7 @@ public class SeriesTableGenerator implements TableGenerator {
                 }
                 statement.executeBatch();
 
-                final var seriesIds = TableGenerator.getIdsOfRowsInsertedWith(statement, seriesCount);
+                final var seriesIds = UTILS.getIdsOfRowsInsertedWith(statement, seriesCount);
 
                 final var seriesTranslation = new SeriesTranslationTableGenerator(seriesIds);
                 seriesTranslation.updateTableUsing(connection);
@@ -53,7 +53,6 @@ public class SeriesTableGenerator implements TableGenerator {
                 final var seriesSeason = new SeriesSeasonTableGenerator(seriesIds, seriesPrices, seasons, episodes);
                 seriesSeason.updateTableUsing(connection);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

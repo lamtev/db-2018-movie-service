@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class LanguageTableGenerator implements TableGenerator {
+public final class LanguageTableGenerator implements TableGenerator {
 
     @NotNull
     private final String[] languages;

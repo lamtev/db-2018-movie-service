@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class MovieTranslationTableGenerator implements TableGenerator {
+public final class MovieTranslationTableGenerator implements TableGenerator {
 
     private static final String VIDEO_URL_TEMPLATE = "https://blob.movie-service.lamtev.com/?vid=";
 
