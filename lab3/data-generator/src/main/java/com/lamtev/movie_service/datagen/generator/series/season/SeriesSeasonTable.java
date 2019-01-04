@@ -1,47 +1,45 @@
-package com.lamtev.movie_service.datagen.generator.user;
+package com.lamtev.movie_service.datagen.generator.series.season;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public final class UserTable {
-
-    private UserTable() {
+public class SeriesSeasonTable {
+    private SeriesSeasonTable() {
 
     }
 
-    public static UserTable instance() {
+    public static SeriesSeasonTable instance() {
         return Holder.INSTANCE;
     }
 
     @NotNull
-    public long[] ids(final @NotNull Connection connection) {
+    public int[] ids(final @NotNull Connection connection) {
         try (final var statement = connection.createStatement()) {
-            statement.executeQuery("SELECT COUNT(*) FROM \"user\"");
+            statement.executeQuery("SELECT COUNT(*) FROM series_season");
             var result = statement.getResultSet();
-            long count = 1;
+            int count = 1;
             if (result != null && result.next()) {
-                count = result.getLong(1);
+                count = result.getInt(1);
             }
-            final var ids = new long[(int) count];
-            statement.executeQuery("SELECT id FROM \"user\"");
+            final var ids = new int[count];
+            statement.executeQuery("SELECT id FROM series_season");
             result = statement.getResultSet();
             int i = 0;
             if (result != null) {
                 while (result.next()) {
-                    ids[i++] = result.getLong(1);
+                    ids[i++] = result.getInt(1);
                 }
             }
             return ids;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new long[0];
+        return new int[0];
     }
 
     private static final class Holder {
-        private static final UserTable INSTANCE = new UserTable();
+        private static final SeriesSeasonTable INSTANCE = new SeriesSeasonTable();
     }
-
 }

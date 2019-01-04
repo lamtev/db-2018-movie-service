@@ -1,6 +1,7 @@
-package com.lamtev.movie_service.datagen.generator.user;
+package com.lamtev.movie_service.datagen.generator.subscription;
 
 import com.lamtev.movie_service.datagen.generator.TableGenerator;
+import com.lamtev.movie_service.datagen.generator.user.UserTable;
 import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGmoney;
 
@@ -12,10 +13,10 @@ import java.util.Calendar;
 public class SubscriptionTableGenerator implements TableGenerator {
 
     private static final int[][] DURATION_PRICE = {
-            {30, 5}, {60, 9}, {90, 13}, {180, 25}, {365, 40}, // only movies or only 1 series season
-            {30, 7}, {60, 13}, {90, 25}, {180, 45}, {365, 75}, // 2 series seasons
-            {30, 10}, {60, 18}, {90, 35}, {180, 65}, {365, 100}, // 3 series seasons
-            {30, 12}, {60, 21}, {90, 40}, {180, 70}, {365, 120}, // 5 series seasons
+            {30, 5}, {60, 9}, {90, 13}, {180, 25}, {365, 40}, // only 5 movies or only 1 series season
+            {30, 7}, {60, 13}, {90, 25}, {180, 45}, {365, 75}, // 10 movies or 2 series seasons
+            {30, 10}, {60, 18}, {90, 35}, {180, 65}, {365, 100}, // 15 movies or 3 series seasons
+            {30, 12}, {60, 21}, {90, 40}, {180, 70}, {365, 120}, // 30 movies 5 or series seasons
     };
 
     private final long userCount;
