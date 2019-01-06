@@ -26,7 +26,7 @@
  
 \section{Разработка генератора} 
 
-Генератор выполнен в виде консольного приложения, разработанного на языке \code{Java} последней версии \code{11.0.1}. Программа ожидает 2 аргумента командной строки: путь к файлу в формате \code{json}, в котором содержатся \code{url} \code{Postgres}-сервера и имя пользователя, и пароль для доступа к нему; и путь к файлу в формате \code{json}, содержащему параметры генератора. Примеры этих 2-х файлов представлены в листингах \ref{lst:db.json} и \ref{lst:params.json}.
+Генератор выполнен в виде консольного приложения, разработанного на языке \code{Java} последней версии \code{11.0.1}. Программа ожидает 2 аргумента командной строки: путь к файлу в формате \code{json}, в котором содержатся \code{url} \code{Postgres}-сервера, и имя пользователя, и пароль для доступа к нему; и путь к файлу в формате \code{json}, содержащему параметры генератора. Примеры этих 2-х файлов представлены в листингах \ref{lst:db.json} и \ref{lst:params.json}.
 
 \begin{lstlisting}[label={lst:db.json},caption={Пример параметров доступа к \code{Postgres}-серверу}]
 {
@@ -115,6 +115,8 @@
 		\item \code{SubscriptionTableDAO} (листинг \ref{lst:SubscriptionTableDAO}) --- класс, в котором реализован \code{SELECT} запрос, специфичный только для таблицы \code{subscription}.
 	\end{itemize}
 	
+	Также был разработан утилитный класс \code{Utils} (листинг \ref{lst:Utils}), в котором реализованы вспомогательные функциональности, используемые при генерации данных для разных таблиц.
+	
 	Для генерации различных данных, таких, как названия фильмов, сериалов, имена пользователей, даты и т.д. использовалась библиотека \code{JavaFaker}.
 	
 \end{enumerate}
@@ -123,7 +125,7 @@
 
 В результате работы был разработан параметризуемый генератор, с помощью которого БД была заполнена данными. Эти данные состоят из десятков тысяч пользователей; десятков тысяч фильмов; тысяч сериалов, содержащих, десятки тысяч серий; сотен тысяч подписок...
 
-Также был получен опыт организации взаимодействия \code{Java}-приложений с базой данных с помощью стандарта \code{JDBC}.
+Также был получен опыт организации взаимодействия \code{Java}-приложений с базами данных с помощью стандарта \code{JDBC}.
 
 \section*{Приложение 1. Исходный код}
 \addcontentsline{toc}{section}{Приложение 1. Исходный код}
@@ -173,5 +175,7 @@
 \lstinputlisting[caption={StorageDAO.java},label={lst:StorageDAO},language={Java}]{src/main/java/com/lamtev/movie_service/datagen/generator/StorageDAO.java}
 
 \lstinputlisting[caption={SubscriptionTableDAO.java},label={lst:SubscriptionTableDAO},language={Java}]{src/main/java/com/lamtev/movie_service/datagen/generator/subscription/SubscriptionTableDAO.java}
+
+\lstinputlisting[caption={Utils.java},label={lst:Utils},language={Java}]{src/main/java/com/lamtev/movie_service/datagen/generator/Utils.java}
 
 \end{document}

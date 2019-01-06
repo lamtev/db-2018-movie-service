@@ -2,7 +2,7 @@
   "usersCount": 20000,
   "femalePercentage": 55,
   "moviesCount": 10000,
-  "seriesCountSeasonsEpisodes" : [
+  "seriesCountSeasonsEpisodes": [
     [100, 3, 15],
     [150, 4, 50],
     [200, 2, 25],

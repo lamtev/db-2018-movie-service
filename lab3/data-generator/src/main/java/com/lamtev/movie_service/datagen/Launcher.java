@@ -3,6 +3,7 @@ package com.lamtev.movie_service.datagen;
 import com.lamtev.movie_service.datagen.cli_args.ArgumentsParser;
 import com.lamtev.movie_service.datagen.generator.LanguageTableGenerator;
 import com.lamtev.movie_service.datagen.generator.StorageDAO;
+import com.lamtev.movie_service.datagen.generator.Utils;
 import com.lamtev.movie_service.datagen.generator.category.CategoryTableGenerator;
 import com.lamtev.movie_service.datagen.generator.movie.MovieTableGenerator;
 import com.lamtev.movie_service.datagen.generator.series.SeriesTableGenerator;
@@ -60,7 +61,7 @@ final class Launcher {
             final var subscriptionIdsNMoviesMSeasons = SubscriptionTableDAO.instance().idsNMoviesOrMSeasons(connection, parameters.durationPriceNMoviesMSeasons());
             final var subscriptionIdsNMovies = new int[2][0];
             final var subscriptionIdsMSeasons = new int[2][0];
-            split(subscriptionIdsNMoviesMSeasons, parameters.moviesSubscriptionsPercentage(), subscriptionIdsNMovies, subscriptionIdsMSeasons);
+            Utils.split(subscriptionIdsNMoviesMSeasons, parameters.moviesSubscriptionsPercentage(), subscriptionIdsNMovies, subscriptionIdsMSeasons);
 
             final var movieIds = StorageDAO.instance().ids(connection, "movie");
             final var subscriptionMovie = new SubscriptionMovieTableGenerator(subscriptionIdsNMovies, movieIds);
@@ -71,28 +72,6 @@ final class Launcher {
             subscriptionSeriesSeason.updateTableUsing(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    private static void split(int[][] subscriptionIdsNMoviesMSeasons, int moviesPercentage, int[][] subscriptionIdsNMovies, int[][] subscriptionIdsMSeasons) {
-        int moviesIdx = 0;
-        int seasonsIdx = 0;
-        int moviesLength = (int) Math.ceil((double) subscriptionIdsNMoviesMSeasons[0].length / 100) * moviesPercentage;
-        int seasonsLength = subscriptionIdsNMoviesMSeasons[0].length - moviesLength;
-        for (int i = 0; i < 2; ++i) {
-            subscriptionIdsNMovies[i] = new int[moviesLength];
-            subscriptionIdsMSeasons[i] = new int[seasonsLength];
-        }
-        for (int i = 0; i < subscriptionIdsNMoviesMSeasons[0].length; ++i) {
-            if (i % 100 < moviesPercentage) {
-                subscriptionIdsNMovies[0][moviesIdx] = subscriptionIdsNMoviesMSeasons[0][i];
-                subscriptionIdsNMovies[1][moviesIdx] = subscriptionIdsNMoviesMSeasons[1][i];
-                moviesIdx++;
-            } else {
-                subscriptionIdsMSeasons[0][seasonsIdx] = subscriptionIdsNMoviesMSeasons[0][i];
-                subscriptionIdsMSeasons[1][seasonsIdx] = subscriptionIdsNMoviesMSeasons[2][i];
-                seasonsIdx++;
-            }
         }
     }
 
