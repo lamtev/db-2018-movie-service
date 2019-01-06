@@ -1,4 +1,4 @@
-package com.lamtev.movie_service.datagen.generator;
+package com.lamtev.movie_service.datagen.cli_args;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -110,6 +110,7 @@ public final class Parameters {
         return moviesCount;
     }
 
+    @NotNull
     public int[][] seriesCountSeasonsEpisodes() {
         return seriesCountSeasonsEpisodes;
     }

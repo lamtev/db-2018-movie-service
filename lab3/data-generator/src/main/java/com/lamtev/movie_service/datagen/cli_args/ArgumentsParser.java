@@ -1,8 +1,6 @@
 package com.lamtev.movie_service.datagen.cli_args;
 
 import com.google.gson.*;
-import com.lamtev.movie_service.datagen.generator.EndpointInfo;
-import com.lamtev.movie_service.datagen.generator.Parameters;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

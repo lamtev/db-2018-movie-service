@@ -1,4 +1,4 @@
-package com.lamtev.movie_service.datagen.generator;
+package com.lamtev.movie_service.datagen.cli_args;
 
 import org.jetbrains.annotations.NotNull;
 
