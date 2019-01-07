@@ -48,6 +48,7 @@ public final class SubscriptionTableDAO {
             if (durationPriceNMoviesMSeason[0] == duration && durationPriceNMoviesMSeason[1] == payment) {
                 n = durationPriceNMoviesMSeason[2];
                 m = durationPriceNMoviesMSeason[3];
+                break;
             }
         }
 

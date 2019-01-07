@@ -1,0 +1,177 @@
+\include{settings}
+
+\begin{document}
+
+\include{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Цели работы}
+
+Познакомитьcя с языком создания запросов управления данными SQL-DML. 
+
+\section{Программа работы}
+
+\begin{enumerate}
+	\item Изучение SQL-DML.
+	\item Выполнение всех запросов из списка стандартных запросов. Демонстрация результатов преподавателю.
+	\item Получение у преподавателя и реализация SQL-запросов в соответствии с индивидуальным заданием. 			\item Демонстрация результатов преподавателю.
+	\item Сохранение в БД выполненных запросов \code{SELECT} в виде представлений, запросов \code{INSERT}, \code{UPDATE} или \code{DELETE} --- в виде ХП.
+ 
+\end{enumerate}
+ 
+\section{Стандартные запросы} 
+
+\subsection{Выборка данных из одной таблицы с использованием логических операций, \code{LIKE}, \code{BETWEEN}, \code{IN}}
+
+В листинге \ref{lst:like-between-in-1.sql} представлен запрос, формирующий выборку пользователей мужского пола, родившихся до 30 декабря 2001 года, и длина логина которых находится в диапазоне между 7 и 11.
+
+\lstinputlisting[caption={like-between-in-1.sql},label={lst:like-between-in-1.sql}]{like-between-in-1.sql}
+ 
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:like-between-in-1}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{like-between-in-1.png}
+	\caption{Выборка, сформированная \code{like-between-in-1.sql}}
+	\label{fig:like-between-in-1}
+\end{figure}
+ 
+
+В листинге \ref{lst:like-between-in-2.sql} представлен запрос, формирующий выборку пользователей женского пола, логин которых начинается с <<\code{Marie.}>>.
+
+\lstinputlisting[caption={like-between-in-2.sql},label={lst:like-between-in-2.sql}]{like-between-in-2.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:like-between-in-2}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{like-between-in-2.png}
+	\caption{Выборка, сформированная \code{like-between-in-2.sql}}
+	\label{fig:like-between-in-2}
+\end{figure}
+
+В листинге \ref{lst:like-between-in-3.sql} представлен запрос, формирующий выборку фильмов, цена которых \$$5$ или \$$7$, при этом они не являются эпизодами сериалов, они были выпущены в октябре (не важно какого года), и их \code{IMDB} рэйтинг лежит в диапазоне между $7.5$ и $7.6$. Поля выборки следующие: идентификатор, стоимость, возраст в годах и рейтинг \code{IMDB}.
+
+\lstinputlisting[caption={like-between-in-3.sql},label={lst:like-between-in-3.sql}]{like-between-in-3.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:like-between-in-3}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{like-between-in-3.png}
+	\caption{Выборка, сформированная \code{like-between-in-3.sql}}
+	\label{fig:like-between-in-3}
+\end{figure}
+
+\subsection{Запрос с вычисляемым полем}
+
+В листинге \ref{lst:calculated-field.sql} представлен запрос, формирующий выборку из 5-ти еще не закончившихся, автоматически возобновляемых подписок, длительность которых равна 30 дням. Поля у выборки следующие: идентификатор подписки, идентификатор пользователя, стоимость и число дней до завершения подписки. При этом последнее поле является вычисляемым.
+
+\lstinputlisting[caption={calculated-field.sql},label={lst:calculated-field.sql}]{calculated-field.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:calculated-field}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{calculated-field.png}
+	\caption{Выборка, сформированная \code{calculated-field.sql}}
+	\label{fig:calculated-field}
+\end{figure}
+
+Значения в столбце \code{expires\_in\_days}, превосходящие 30, объясняются тем, что эти подписки еще не вступили в силу.
+
+\subsection{Выборка с сортировкой по нескольким полям}
+
+В листинге \ref{lst:sorted.sql} представлен запрос, формирующий выборку из 5-ти сериалов, при этом сериалы отсортированы по возрастанию числа сезонов и по убыванию стоимости.
+
+\lstinputlisting[caption={sorted.sql},label={lst:sorted.sql}]{sorted.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:sorted}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{sorted.png}
+	\caption{Выборка, сформированная \code{sorted.sql}}
+	\label{fig:sorted}
+\end{figure}
+
+\subsection{Запрос с вычислением совокупных характеристик}
+
+В листинге \ref{lst:aggregate.sql} представлен запрос, формирующий одну строку, содержащую общее число пользователей, максимальную длину имени, минимальную длину фамилии, средний возраст пользователей, а также число ползователей мужского пола.
+
+\lstinputlisting[caption={aggregate.sql},label={lst:aggregate.sql}]{aggregate.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:aggregate}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{aggregate.png}
+	\caption{Выборка, сформированная \code{aggregate.sql}}
+	\label{fig:aggregate}
+\end{figure}
+
+\subsection{Выборка данных из связанных таблиц}
+
+В листинге \ref{lst:join1.sql} представлен запрос, в котором соединяются 2 таблицы --- \code{series} (сериалы) и \code{series\_translation} (переводы сериалов) для формирования названия сериала с наибольшим числом сезонов и наибольшей стоимостью.
+
+\lstinputlisting[caption={join1.sql},label={lst:join1.sql}]{join1.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:join1}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{join1.png}
+	\caption{Выборка, сформированная \code{join1.sql}}
+	\label{fig:join1}
+\end{figure}
+
+В листинге \ref{lst:join2.sql} представлен запрос, в котором соединяются 3 таблицы --- \code{movie\_translation} (переводы фильмов), \code{language} (языки) и \code{user\_movie} (пользователи -- фильмы) для определения наиболее часто приобретаемого фильма, который не является эпизодом сериала. Выборка состоит из 2-х записей, содержащих идентификатор фильма, имя фильма, локаль и частоту его покупки, для 2-х локалей: русской и английской.
+
+\lstinputlisting[caption={join2.sql},label={lst:join2.sql}]{join2.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:join2}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{join2.png}
+	\caption{Выборка, сформированная \code{join2.sql}}
+	\label{fig:join2}
+\end{figure}
+
+\subsection{Запрос с подзапросами}
+
+В листинге \ref{lst:inner.sql} представлен запрос, который аналогично предыдущему запросу выводит название фильма, который наиболее часто покупается пользователями, но уже с помощью вложенных подзапросов.
+\lstinputlisting[caption={inner.sql},label={lst:inner.sql}]{inner.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:inner}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{inner.png}
+	\caption{Выборка, сформированная \code{inner.sql}}
+	\label{fig:inner}
+\end{figure}
+
+Выборка получилась такой же, как и при предыдущем запросе.
+
+\subsection{Запрос с ограничением результата группировки}
+
+В листинге \ref{lst:group.sql} представлен запрос, находящий пользователей, у которых больше 42 подписок, с помощью ограничения результата группировки по идентификатору пользователя.
+
+\lstinputlisting[caption={group.sql},label={lst:group.sql}]{group.sql}
+
+Выборка, сформированная данным запросом, представлена на рис. \ref{fig:group}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.2\textwidth]{group.png}
+	\caption{Выборка, сформированная \code{group.sql}}
+	\label{fig:group}
+\end{figure}
+
+\subsection{Добавление записей в таблицы}
+%TODO
+
+\end{document}
