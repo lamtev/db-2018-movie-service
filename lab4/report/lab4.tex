@@ -60,7 +60,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{like-between-in-3.png}
+	\includegraphics[width=0.4\textwidth]{like-between-in-3.png}
 	\caption{Выборка, сформированная \code{like-between-in-3.sql}}
 	\label{fig:like-between-in-3}
 \end{figure}
@@ -75,7 +75,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{calculated-field.png}
+	\includegraphics[width=0.45\textwidth]{calculated-field.png}
 	\caption{Выборка, сформированная \code{calculated-field.sql}}
 	\label{fig:calculated-field}
 \end{figure}
@@ -92,7 +92,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{sorted.png}
+	\includegraphics[width=0.32\textwidth]{sorted.png}
 	\caption{Выборка, сформированная \code{sorted.sql}}
 	\label{fig:sorted}
 \end{figure}
@@ -107,7 +107,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{aggregate.png}
+	\includegraphics[width=0.8\textwidth]{aggregate.png}
 	\caption{Выборка, сформированная \code{aggregate.sql}}
 	\label{fig:aggregate}
 \end{figure}
@@ -166,12 +166,47 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.2\textwidth]{group.png}
+	\includegraphics[width=0.15\textwidth]{group.png}
 	\caption{Выборка, сформированная \code{group.sql}}
 	\label{fig:group}
 \end{figure}
 
 \subsection{Добавление записей в таблицы}
-%TODO
+
+В листинге \ref{lst:group.sql} представлен запрос, добавляющий записи во все таблицы.
+
+\lstinputlisting[caption={insert.sql},label={lst:insert.sql}]{insert.sql}
+
+\subsection{Изменение значений полей записей, удовлетворяющих условиям}
+
+В листинге \ref{lst:update.sql} представлен запрос, который в таблице \code{"user"} изменяет логин, равный \code{'null'}, на значение \code{'notnull'}.
+
+\lstinputlisting[caption={update.sql},label={lst:update.sql}]{update.sql}
+
+\subsection{Удаление записей}
+
+В листинге \ref{lst:delete.sql} представлен запрос, который в таблице \code{movie} удаляет все записи, у которых максимальная цена или максимальный рейтинг.
+
+\lstinputlisting[caption={delete.sql},label={lst:delete.sql}]{delete.sql}
+
+В листинге \ref{lst:delete-inner-select.sql} представлен запрос, который в таблице \code{movie} удаляет все записи, для которых в таблице \code{movie\_translation} нет переводов на языки с идентификаторами 1 и 2.
+
+\lstinputlisting[caption={delete-inner-select.sql},label={lst:delete-inner-select.sql}]{delete-inner-select.sql}
+
+\section{Запросы в соответствии с индивидуальным заданием}
+
+\subsection{Запрос 1}
+
+Вывести пользователей, которые смотрят сериалы больше, чем фильмы.
+
+\subsection{Запрос 2}
+
+Вывести сериалы, которые от сезона к сезону увеличивали аудиторию.
+
+\section{Сохранение в БД выполненных запросов в виде представлений и ХП}
+
+
+\section{Выводы}
+
 
 \end{document}
