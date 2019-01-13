@@ -9,12 +9,12 @@
 
 \section{Цели работы}
 
-Познакомитьcя с языком создания запросов управления данными SQL-DML. 
+Познакомитьcя с языком создания запросов управления данными SQL DML. 
 
 \section{Программа работы}
 
 \begin{enumerate}
-	\item Изучение SQL-DML.
+	\item Изучение SQL DML.
 	\item Выполнение всех запросов из списка стандартных запросов. Демонстрация результатов преподавателю.
 	\item Получение у преподавателя и реализация SQL-запросов в соответствии с индивидуальным заданием. 			\item Демонстрация результатов преподавателю.
 	\item Сохранение в БД выполненных запросов \code{SELECT} в виде представлений, запросов \code{INSERT}, \code{UPDATE} или \code{DELETE} --- в виде ХП.
@@ -199,14 +199,61 @@
 
 Вывести пользователей, которые смотрят сериалы больше, чем фильмы.
 
+\lstinputlisting[caption={series-lovers.sql},label={lst:series-lovers.sql}]{ind1/series-lovers.sql}
+
+Запрос логически состоит из 3 частей:
+
+\begin{enumerate}
+	\item формирование выборки \code{(user\_id, movie\_count)}, в которой каждому пользователю сопоставляется общее количество фильмов, которые он купил, либо которые входят в приобретенные им подписки
+	\item формирование выборки \code{(user\_id, episodes\_count)}, в которой каждому пользователю сопоставляется общее число эпизодов сериалов, которые пользователь купил, или которые входят в состав его подписок
+	\item соединение двух сформированных выборок и таблицы \code{user}, сравнение для каждого пользователя значений \code{movie\_count} и \code{episodes\_count}, и на основе этого формирование новой выборки для пользователей, у которых значение \code{movie\_count} < \code{episodes\_count}
+\end{enumerate}
+
+Первые 5 записей сформированной выборки представлены на рис. \ref{fig:series-lovers}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{series-lovers}
+	\caption{Выборка, сформированная \code{series-lovers.sql}}
+	\label{fig:series-lovers}
+\end{figure}
+
 \subsection{Запрос 2}
 
 Вывести сериалы, которые от сезона к сезону увеличивали аудиторию.
 
+\lstinputlisting[caption={series-increasing-audience.sql},label={lst:series-increasing-audience.sql}]{ind2/series-increasing-audience.sql}
+
+Определение того, что от сезона к сезону происходило увеличение аудитории у сериала, сделано следующим образом:
+
+\begin{enumerate}
+	\item формируем выборку \code{(series\_id, series\_season\_id, season\_number, audience)} --- идентификатор сериала, идентификатор сезона сериала, номер сезона и аудитория
+	\item на основе предыдущей выборки с помощью \code{SELF JOIN} формируем выборку, в которой для каждого сезона сериала, номер которого больше 1, содержится разность аудитории по сравнению с предыдущим сезоном
+	\item для каждого сериала считаем количество положительных разностей
+	\item если это количество = количеству сезонов в сериале минус 1 (т.к для первого сезона нет предыдущего сезона), то этот сериал нам подходит
+\end{enumerate}
+
+Первые 5 записей сформированной выборки представлены на рис. \ref{fig:series-increasing-audience}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{series-increasing-audience}
+	\caption{Выборка, сформированная \code{series-increasing-audience.sql}}
+	\label{fig:series-increasing-audience}
+\end{figure}
+
 \section{Сохранение в БД выполненных запросов в виде представлений и ХП}
 
+В листинге \ref{lst:views.sql} представлены все ранее написанные \code{SELECT}-запросы в виде представлений.
+
+\lstinputlisting[caption={views.sql},label={lst:views.sql}]{views.sql}
+
+В листинге \ref{lst:stored-procedures.sql} представлены все ранее написанные запросы по добавлению, удалению или обновлению данных в таблицах в виде хранимых процедур.
+
+\lstinputlisting[caption={stored-procedures.sql},label={lst:stored-procedures.sql}]{stored-procedures.sql}
 
 \section{Выводы}
 
+В результате работы был изучен синтаксис языка SQL DML, позволяющий формировать запросы выборки данных из таблиц, формировать запросы по вставке, удалению или обновлению записей в таблицах, создавать на основе запросов представления, которые являются виртуальными таблицами, и создавать хранимые процедуры.
 
 \end{document}
