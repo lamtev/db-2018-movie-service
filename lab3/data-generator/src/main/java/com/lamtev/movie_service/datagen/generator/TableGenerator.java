@@ -18,7 +18,7 @@ public interface TableGenerator {
     /**
      * Updates corresponding table via {@code connection} with newly generated data.
      *
-     * @param connection Connection (session) with data base.
+     * @param connection {@link Connection} (session) with data base.
      */
     void updateTableUsing(final @NotNull Connection connection);
 }

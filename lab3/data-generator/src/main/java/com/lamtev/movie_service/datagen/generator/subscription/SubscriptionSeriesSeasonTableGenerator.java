@@ -24,7 +24,7 @@ public final class SubscriptionSeriesSeasonTableGenerator implements TableGenera
                 "INSERT INTO subscription_series_season (subscription_id, series_season_id) VALUES (?, ?)"
         )) {
             for (int j = 0; j < subscriptionIdsMSeasons[0].length; ++j) {
-                final var nSeriesSeasons = (int) subscriptionIdsMSeasons[1][j];
+                final var nSeriesSeasons = subscriptionIdsMSeasons[1][j];
                 final var seriesIdsIdxs = UTILS.nUniqueRandomInts(nSeriesSeasons, seriesSeasonIds.length);
                 for (final var seriesIdsIdx : seriesIdsIdxs) {
                     int i = 0;

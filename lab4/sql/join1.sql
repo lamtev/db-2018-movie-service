@@ -1,6 +1,6 @@
 SELECT st.name,
-       max(s.seasons) as max_seasons,
-       max(s.price)   as max_price
+       max(s.seasons) AS max_seasons,
+       max(s.price)   AS max_price
 FROM series s
        JOIN series_translation st ON s.id = st.series_id
 GROUP BY st.name

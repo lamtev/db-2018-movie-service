@@ -1,7 +1,7 @@
 SELECT mt.movie_id,
        mt.name,
-       l.name             as locale,
-       count(um.movie_id) as frequency
+       l.name             AS locale,
+       count(um.movie_id) AS frequency
 FROM movie_translation mt
        JOIN language l ON mt.language_id = l.id
        JOIN user_movie um ON mt.movie_id = um.movie_id

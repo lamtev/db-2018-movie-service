@@ -24,7 +24,7 @@ public final class SubscriptionMovieTableGenerator implements TableGenerator {
                 "INSERT INTO subscription_movie (subscription_id, movie_id) VALUES (?, ?)"
         )) {
             for (int j = 0; j < subscriptionIdsNMovies[0].length; ++j) {
-                final var nMovies = (int) subscriptionIdsNMovies[1][j];
+                final var nMovies = subscriptionIdsNMovies[1][j];
                 final var movieIdsIdxs = UTILS.nUniqueRandomInts(nMovies, movieIds.length);
                 for (final var movieIdsIdx : movieIdsIdxs) {
                     int i = 0;

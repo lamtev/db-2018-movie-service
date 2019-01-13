@@ -1,4 +1,4 @@
-SELECT mt.movie_id, mt.name, l.name as locale
+SELECT mt.movie_id, mt.name, l.name AS locale
 FROM movie_translation mt
        JOIN language l ON mt.language_id = l.id
 WHERE movie_id in (SELECT movie_id
