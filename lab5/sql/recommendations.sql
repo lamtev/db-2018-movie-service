@@ -76,5 +76,6 @@ WHERE cma.category_id IN (SELECT fc.category_id
 LIMIT n
 $$;
 
+
 SELECT *
-FROM up_to_n_movie_recommendations_for_user(10, 1234)
+FROM up_to_n_movie_recommendations_for_user(10, 123)
