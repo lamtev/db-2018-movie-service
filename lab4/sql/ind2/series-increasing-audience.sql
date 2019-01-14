@@ -1,16 +1,17 @@
 SELECT series_increasing_audience.series_id, st.name
-FROM (WITH series_season_audience AS (SELECT s.id                       AS series_id,
-                                             ss.id                      AS series_season_id,
-                                             ss.number                  AS season_number,
-                                             count(DISTINCT sb.user_id) AS audience
-                                      FROM series_season ss
-                                             JOIN series s
-                                                  ON ss.series_id = s.id
-                                             JOIN subscription_series_season sss
-                                                  ON ss.id = sss.series_season_id
-                                             JOIN subscription sb
-                                                  ON sss.subscription_id = sb.id
-                                      GROUP BY s.id, ss.id
+FROM (WITH series_season_audience AS (
+  SELECT s.id                       AS series_id,
+         ss.id                      AS series_season_id,
+         ss.number                  AS season_number,
+         count(DISTINCT sb.user_id) AS audience
+  FROM series_season ss
+         JOIN series s
+              ON ss.series_id = s.id
+         JOIN subscription_series_season sss
+              ON ss.id = sss.series_season_id
+         JOIN subscription sb
+              ON sss.subscription_id = sb.id
+  GROUP BY s.id, ss.id
   )
   SELECT DISTINCT ssa.series_id
   FROM series_season_audience ssa

@@ -26,6 +26,7 @@ public final class Parameters {
     @NotNull
     private final int[][] durationPriceNMoviesMSeasons;
     private final int moviesSubscriptionsPercentage;
+    private final int yearsSinceFirstSubscription;
 
     public Parameters(int usersCount,
                       int femalePercentage,
@@ -37,6 +38,7 @@ public final class Parameters {
                       int percentageOfUsersWhoBoughtSeries,
                       int minSeriesPerUser,
                       int maxSeriesPerUser,
+                      int yearsSinceFirstSubscription,
                       int minSubscriptionsPerUser,
                       int maxSubscriptionsPerUser,
                       @NotNull int[][] durationPriceNMoviesMSeasons,
@@ -51,6 +53,7 @@ public final class Parameters {
         this.percentageOfUsersWhoBoughtSeries = percentageOfUsersWhoBoughtSeries;
         this.minSeriesPerUser = minSeriesPerUser;
         this.maxSeriesPerUser = maxSeriesPerUser;
+        this.yearsSinceFirstSubscription = yearsSinceFirstSubscription;
         this.minSubscriptionsPerUser = minSubscriptionsPerUser;
         this.maxSubscriptionsPerUser = maxSubscriptionsPerUser;
         this.durationPriceNMoviesMSeasons = durationPriceNMoviesMSeasons;
@@ -115,4 +118,7 @@ public final class Parameters {
         return seriesCountSeasonsEpisodes;
     }
 
+    public int yearsSinceFirstSubscription() {
+        return yearsSinceFirstSubscription;
+    }
 }

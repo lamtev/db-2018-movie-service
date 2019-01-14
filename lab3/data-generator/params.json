@@ -1,7 +1,7 @@
 {
-  "usersCount": 20000,
+  "usersCount": 10000,
   "femalePercentage": 55,
-  "moviesCount": 10000,
+  "moviesCount": 25000,
   "seriesCountSeasonsEpisodes": [
     [100, 3, 15],
     [150, 4, 50],
@@ -11,12 +11,13 @@
   ],
   "percentageOfUsersWhoBoughtMovies": 64,
   "minMoviesPerUser": 5,
-  "maxMoviesPerUser": 10,
+  "maxMoviesPerUser": 100,
   "percentageOfUsersWhoBoughtSeries": 35,
   "minSeriesPerUser": 2,
-  "maxSeriesPerUser": 5,
-  "minSubscriptionsPerUser": 3,
-  "maxSubscriptionsPerUser": 10,
+  "maxSeriesPerUser": 100,
+  "yearsSinceFirstSubscription": 5,
+  "minSubscriptionsPerUser": 7,
+  "maxSubscriptionsPerUser": 25,
   "durationPriceNMoviesMSeasons": [
     [30, 5, 5, 1], [60, 9, 5, 1], [90, 13, 5, 1], [180, 25, 5, 1], [365, 40, 5, 1],
     [30, 7, 10, 2], [60, 13, 10, 2], [90, 25, 10, 2], [180, 45, 10, 2], [365, 75, 10, 2],

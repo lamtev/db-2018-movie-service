@@ -17,13 +17,16 @@ public final class SubscriptionTableGenerator implements TableGenerator {
     private final int maxSubscriptionsPerUser;
     @NotNull
     private final int[][] durationPriceNMoviesMSeasons;
+    private final int yearsSinceFirstSubscription;
 
     public SubscriptionTableGenerator(long usersCount, int minSubscriptionsPerUser,
-                                      int maxSubscriptionsPerUser, final @NotNull int[][] durationPriceNMoviesMSeasons) {
+                                      int maxSubscriptionsPerUser, final @NotNull int[][] durationPriceNMoviesMSeasons,
+                                      int yearsSinceFirstSubscription) {
         this.usersCount = usersCount;
         this.minSubscriptionsPerUser = minSubscriptionsPerUser;
         this.maxSubscriptionsPerUser = maxSubscriptionsPerUser;
         this.durationPriceNMoviesMSeasons = durationPriceNMoviesMSeasons;
+        this.yearsSinceFirstSubscription = yearsSinceFirstSubscription;
     }
 
     @Override
@@ -38,7 +41,7 @@ public final class SubscriptionTableGenerator implements TableGenerator {
                     int i = 0;
                     try {
                         statement.setLong(++i, userIds[idx]);
-                        final var started = UTILS.randomDate(1);
+                        final var started = UTILS.randomDate(yearsSinceFirstSubscription);
                         statement.setObject(++i, started);
                         final var calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(started.getTime());
