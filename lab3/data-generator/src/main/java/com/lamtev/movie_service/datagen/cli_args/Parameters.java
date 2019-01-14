@@ -28,6 +28,13 @@ public final class Parameters {
     private final int moviesSubscriptionsPercentage;
     private final int yearsSinceFirstSubscription;
 
+    private boolean genMoviesOnly = false;
+    private boolean genSeriesOnly = false;
+    private boolean genUsersOnly = false;
+    private boolean genSubscriptionsToMoviesOnly = false;
+    private boolean genSubscriptionsToSeriesOnly = false;
+    private boolean genAll = true;
+
     public Parameters(int usersCount,
                       int femalePercentage,
                       int moviesCount,
@@ -121,4 +128,53 @@ public final class Parameters {
     public int yearsSinceFirstSubscription() {
         return yearsSinceFirstSubscription;
     }
+
+    public boolean isGenMoviesOnly() {
+        return genMoviesOnly;
+    }
+
+    public void setGenMoviesOnly(boolean genMoviesOnly) {
+        this.genMoviesOnly = genMoviesOnly;
+    }
+
+    public boolean isGenSeriesOnly() {
+        return genSeriesOnly;
+    }
+
+    public void setGenSeriesOnly(boolean genSeriesOnly) {
+        this.genSeriesOnly = genSeriesOnly;
+    }
+
+    public boolean isGenUsersOnly() {
+        return genUsersOnly;
+    }
+
+    public void setGenUsersOnly(boolean genUsersOnly) {
+        this.genUsersOnly = genUsersOnly;
+    }
+
+    public boolean isGenSubscriptionsToMoviesOnly() {
+        return genSubscriptionsToMoviesOnly;
+    }
+
+    public void setGenSubscriptionsToMoviesOnly(boolean genSubscriptionsToMoviesOnly) {
+        this.genSubscriptionsToMoviesOnly = genSubscriptionsToMoviesOnly;
+    }
+
+    public boolean isGenSubscriptionsToSeriesOnly() {
+        return genSubscriptionsToSeriesOnly;
+    }
+
+    public void setGenSubscriptionsToSeriesOnly(boolean genSubscriptionsToSeriesOnly) {
+        this.genSubscriptionsToSeriesOnly = genSubscriptionsToSeriesOnly;
+    }
+
+    public boolean isGenAll() {
+        return genAll;
+    }
+
+    public void setGenAll(boolean genAll) {
+        this.genAll = genAll;
+    }
+
 }

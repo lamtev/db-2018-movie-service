@@ -38,7 +38,37 @@ public class ArgumentsParser {
     @Nullable
     public Parameters parameters() {
         try (final var fileReader = new FileReader(args[1])) {
-            return gson.fromJson(fileReader, Parameters.class);
+            final var params = gson.fromJson(fileReader, Parameters.class);
+            if (args.length == 3) {
+                switch (args[2]) {
+                    case "onlyMovies":
+                        params.setGenMoviesOnly(true);
+                        params.setGenAll(false);
+                        break;
+                    case "onlySeries":
+                        params.setGenSeriesOnly(true);
+                        params.setGenAll(false);
+                        break;
+                    case "onlyUsers":
+                        params.setGenUsersOnly(true);
+                        params.setGenAll(false);
+                        break;
+                    case "onlyMovieSubscriptions":
+                        params.setGenSubscriptionsToMoviesOnly(true);
+                        params.setGenAll(false);
+                        break;
+                    case "onlySeriesSubscriptions":
+                        params.setGenSubscriptionsToSeriesOnly(true);
+                        params.setGenAll(false);
+                        break;
+                    default:
+                        params.setGenAll(true);
+                        break;
+                }
+            } else {
+                params.setGenAll(true);
+            }
+            return params;
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();

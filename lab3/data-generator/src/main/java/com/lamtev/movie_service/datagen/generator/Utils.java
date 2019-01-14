@@ -1,6 +1,7 @@
 package com.lamtev.movie_service.datagen.generator;
 
 import com.github.javafaker.Faker;
+import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +53,20 @@ public final class Utils {
         try (final var generatedKeys = statement.getGeneratedKeys()) {
             while (generatedKeys.next()) {
                 keys[i++] = generatedKeys.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return keys;
+    }
+
+    @NotNull
+    public TIntSet getIdsOfRowsInsertedWith(final @NotNull Statement statement) {
+        final var keys = new TIntHashSet();
+        try (final var generatedKeys = statement.getGeneratedKeys()) {
+            while (generatedKeys.next()) {
+                keys.add(generatedKeys.getInt(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();

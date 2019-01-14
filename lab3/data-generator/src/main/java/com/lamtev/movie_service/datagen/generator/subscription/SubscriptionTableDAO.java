@@ -2,6 +2,7 @@ package com.lamtev.movie_service.datagen.generator.subscription;
 
 
 import com.lamtev.movie_service.datagen.generator.StorageDAO;
+import gnu.trove.set.TIntSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
@@ -17,7 +18,7 @@ public final class SubscriptionTableDAO {
     }
 
     @NotNull
-    public int[][] idsNMoviesOrMSeasons(final @NotNull Connection connection, final @NotNull int[][] durationPriceNMoviesMSeasons) {
+    public int[][] idsNMoviesOrMSeasonsContainingInIds(final @NotNull Connection connection, final @NotNull int[][] durationPriceNMoviesMSeasons, final @NotNull TIntSet idsSet) {
         try (final var statement = connection.createStatement()) {
             int count = StorageDAO.instance().count(connection, "subscription");
             final var idsNMoviesOrMSeasons = new int[3][count];
@@ -26,11 +27,14 @@ public final class SubscriptionTableDAO {
             int i = 0;
             if (result != null) {
                 while (result.next()) {
-                    idsNMoviesOrMSeasons[0][i] = result.getInt(1);
-                    final var nm = nMoviesMSeasons(result.getInt(2), result.getInt(3), durationPriceNMoviesMSeasons);
-                    idsNMoviesOrMSeasons[1][i] = nm[0];
-                    idsNMoviesOrMSeasons[2][i] = nm[1];
-                    i++;
+                    int id = result.getInt(1);
+                    if (idsSet.contains(id)) {
+                        idsNMoviesOrMSeasons[0][i] = id;
+                        final var nm = nMoviesMSeasons(result.getInt(2), result.getInt(3), durationPriceNMoviesMSeasons);
+                        idsNMoviesOrMSeasons[1][i] = nm[0];
+                        idsNMoviesOrMSeasons[2][i] = nm[1];
+                        i++;
+                    }
                 }
             }
             return idsNMoviesOrMSeasons;

@@ -2,6 +2,7 @@ package com.lamtev.movie_service.datagen.generator.subscription;
 
 import com.lamtev.movie_service.datagen.generator.StorageDAO;
 import com.lamtev.movie_service.datagen.generator.TableGenerator;
+import gnu.trove.set.TIntSet;
 import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGmoney;
 
@@ -18,6 +19,7 @@ public final class SubscriptionTableGenerator implements TableGenerator {
     @NotNull
     private final int[][] durationPriceNMoviesMSeasons;
     private final int yearsSinceFirstSubscription;
+    private TIntSet generatedIds;
 
     public SubscriptionTableGenerator(long usersCount, int minSubscriptionsPerUser,
                                       int maxSubscriptionsPerUser, final @NotNull int[][] durationPriceNMoviesMSeasons,
@@ -58,9 +60,14 @@ public final class SubscriptionTableGenerator implements TableGenerator {
             });
 
             statement.executeBatch();
+            generatedIds = UTILS.getIdsOfRowsInsertedWith(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public TIntSet getGeneratedIds() {
+        return generatedIds;
     }
 
 }
