@@ -26,7 +26,7 @@ FROM (WITH series_season_audience AS (
                      GROUP BY current_series_id, diff
                     ) AS diffs
                WHERE diff > 0
-               GROUP BY current_series_id) as sd
+               GROUP BY current_series_id) AS sd
               ON ssa.series_id = sd.current_series_id
          JOIN series
               ON ssa.series_id = series.id
