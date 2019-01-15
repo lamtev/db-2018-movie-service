@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+
 public final class SubscriptionTableGenerator implements TableGenerator {
 
     private final long usersCount;
@@ -35,7 +37,8 @@ public final class SubscriptionTableGenerator implements TableGenerator {
     public void updateTableUsing(final @NotNull Connection connection) {
         final var userIds = StorageDAO.instance().ids(connection, "\"user\"");
         try (final var statement = connection.prepareStatement(
-                "INSERT INTO subscription (user_id, started, expires, autorenewable, payment) VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO subscription (user_id, started, expires, autorenewable, payment) VALUES (?, ?, ?, ?, ?)",
+                RETURN_GENERATED_KEYS
         )) {
             RANDOM.ints(usersCount, 0, userIds.length).forEach(idx -> {
                 final var nSubscriptions = RANDOM.nextInt(maxSubscriptionsPerUser - minSubscriptionsPerUser + 1) + minSubscriptionsPerUser;
