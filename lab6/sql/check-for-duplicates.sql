@@ -16,6 +16,7 @@ BEGIN
        FROM subscription s
               JOIN subscription_series_season sss
                    ON s.user_id = subscription_user_id
+                     AND s.id = sss.subscription_id
        WHERE sss.series_season_id = NEW.series_season_id
        LIMIT 1);
   IF subscription_id IS NOT NULL THEN
